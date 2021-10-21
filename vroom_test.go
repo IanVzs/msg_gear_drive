@@ -16,7 +16,7 @@ func TestVRoom(t *testing.T) {
 	ServeEvent(hub, "e2", "2")
 	ServeEvent(hub, "e3", "3")
 
-	time.Sleep(1 * time.Second)
+	time.Sleep(5 * time.Second)
 	t.Log("Test Done")
 	// time.Sleep(time.Second * 1)
 }
@@ -28,15 +28,15 @@ func TestVRoomByLoop(t *testing.T) {
 	for _, i := range []int{1, 2, 3, 4, 5, 6, 7} {
 		s_i := strconv.Itoa(i)
 		ServeEvent(hub, "e"+s_i, s_i)
-		time.Sleep(30 * time.Millisecond)
+		time.Sleep(300 * time.Millisecond)
 	}
 	fmt.Println("----------------------------------------------------------------------------------------------------------------------------------")
-	for _, i := range []int{1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3} {
+	for _, i := range []int{1, 2, 3, 1, 2, 3} {
 		s_i := strconv.Itoa(i)
 		ServeEvent(hub, "e"+s_i, s_i)
-		time.Sleep(30 * time.Millisecond)
+		time.Sleep(300 * time.Millisecond)
 	}
 
-	time.Sleep(1 * time.Second)
+	time.Sleep(5 * time.Second)
 	t.Log("Test Done")
 }

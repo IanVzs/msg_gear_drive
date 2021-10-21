@@ -1,6 +1,10 @@
 package virtual_room
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/robfig/cron/v3"
+)
 
 type Hub struct {
 	// Registered clients.
@@ -14,6 +18,9 @@ type Hub struct {
 
 	// Unregister requests from clients.
 	unregister chan *Client
+
+	// crontab
+	crontab *cron.Cron
 }
 
 func NewHub() *Hub {
@@ -22,6 +29,7 @@ func NewHub() *Hub {
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		clients:    make(map[*Client]bool),
+		crontab:    NewCron(),
 	}
 }
 

@@ -17,8 +17,9 @@ func ServeEvent(hub *Hub, name string, event string) {
 	// Allow collection of memory referenced by the caller by doing all work in
 	// new goroutines.
 	go client.writePump()
-
 	client.hub.register <- client
 	fmt.Printf("%s: 时间UnixNano时间: %d\n", event, time.Now().UnixNano())
+	client.writeCronTab()
+	client.hub.crontab.Start()
 	hub.broadcast <- []byte(event)
 }

@@ -8,7 +8,7 @@ import (
 
 const (
 	// Time allowed to read the next pong message from the peer.
-	pongWait = 100 * time.Millisecond
+	pongWait = 1 * time.Second
 
 	// Send pings to peer with this period. Must be less than pongWait.
 	pingPeriod = (pongWait * 9) / 10
@@ -66,4 +66,12 @@ func (c *Client) writePump() {
 			return
 		}
 	}
+}
+
+// TODO 写入csv中定时事件
+func (c *Client) writeCronTab() {
+	c.hub.crontab.AddFunc("@every 2s", func() {
+		eventName := "TODO测试事件"
+		c.hub.broadcast <- []byte(eventName)
+	})
 }
