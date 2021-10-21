@@ -9,7 +9,12 @@ import (
 
 func TestVRoom(t *testing.T) {
 	hub := NewHub()
-	go hub.run()
+	go hub.Run()
+
+	ServeEvent(hub, "e1", "1")
+	ServeEvent(hub, "e1", "1_2")
+	ServeEvent(hub, "e2", "2")
+	ServeEvent(hub, "e3", "3")
 
 	time.Sleep(1 * time.Second)
 	t.Log("Test Done")
@@ -18,7 +23,7 @@ func TestVRoom(t *testing.T) {
 
 func TestVRoomByLoop(t *testing.T) {
 	hub := NewHub()
-	go hub.run()
+	go hub.Run()
 
 	for _, i := range []int{1, 2, 3, 4, 5, 6, 7} {
 		s_i := strconv.Itoa(i)
