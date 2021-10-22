@@ -1,9 +1,12 @@
 package virtual_room
 
 import (
+	"encoding/json"
 	"fmt"
 	"sync"
 	"time"
+
+	"github.com/robfig/cron/v3"
 )
 
 const (
@@ -14,14 +17,22 @@ const (
 	pingPeriod = (pongWait * 9) / 10
 )
 
+type todoNote struct {
+	status    int // 未进行/进行中/已完成/已放弃/已失败
+	name      string
+	t         string    // 类型
+	condition [4]string // 达成条件 时间/地点/人物/事件
+}
 type handNote struct {
-	status int
+	stack *Stack
 }
 
 // Client is a middleman between the websocket connection and the hub.
 type Client struct {
 	sync.Mutex
 	hub *Hub
+	// crontab
+	crontab *cron.Cron
 	// ...
 	handNote *handNote
 
@@ -40,7 +51,6 @@ func (c *Client) writePump() {
 	rSign := false
 	defer func() {
 		ticker.Stop()
-		c.handNote.status = 0
 		c.hub.unregister <- c
 	}()
 	for {
@@ -68,10 +78,14 @@ func (c *Client) writePump() {
 	}
 }
 
-// TODO 写入csv中定时事件
+// TODO 写入csv中定时事件/有bug
 func (c *Client) writeCronTab() {
-	c.hub.crontab.AddFunc("@every 2s", func() {
-		eventName := "TODO测试事件"
-		c.hub.broadcast <- []byte(eventName)
+	eventName := "TODO测试事件"
+	c.crontab.AddFunc("@every 2s", func() {
+		peek := c.handNote.stack.Peek()
+		peek_str, _ := json.Marshal(peek)
+		fmt.Println(peek, peek_str)
+		c.hub.broadcast <- []byte(peek_str)
 	})
+	c.handNote.stack.Push(todoNote{status: 0, name: eventName, t: "test", condition: [4]string{"*", "*", "test", "happend"}})
 }

@@ -1,13 +1,12 @@
 all: tvroom
 tvroom:
-	go test vroom_test.go hub.go client.go vroom.go gcron.go
+	go test -v vroom_test.go hub.go client.go vroom.go gcron.go gstack.go gsigle_list.go
 tcron:
 	go test -v cron_test.go gcron.go
 tcron_addwhilerunning:
 	go test -v cron_test.go gcron.go -run TestAddWhileRunning
-
-test_v:
-	go test -v vroom_test.go hub.go client.go vroom.go gcron.go
+tstack:
+	go test -v gstack_test.go gstack.go gsigle_list.go
 
 test_i:
 	mv import_test ..
