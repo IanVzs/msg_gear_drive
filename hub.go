@@ -32,11 +32,16 @@ func (h *Hub) Run() {
 		select {
 		case client := <-h.register:
 			h.clients[client] = true
+			client.writeCronTab()
+			client.crontab.Start()
 		case client := <-h.unregister:
 			if _, ok := h.clients[client]; ok {
 				delete(h.clients, client)
 				close(client.receive)
+				client.crontab.Stop()
 				fmt.Printf("移除: %s\n", client.name)
+			} else {
+				fmt.Printf("已经被移除: %s\n", client.name)
 			}
 		case message := <-h.broadcast:
 			for client := range h.clients {

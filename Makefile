@@ -1,6 +1,6 @@
 all: tvroom
 tvroom:
-	go test -v vroom_test.go hub.go client.go vroom.go gcron.go gstack.go gsigle_list.go
+	go test -v vroom_test.go hub.go client.go vroom.go gcron.go gstack.go gsigle_list.go models.go
 tcron:
 	go test -v cron_test.go gcron.go
 tcron_addwhilerunning:

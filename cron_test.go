@@ -16,12 +16,12 @@ func TestAddWhileRunning(t *testing.T) {
 
 	c.Start()
 
-	time.Sleep(time.Second * 5)
+	time.Sleep(time.Second * 3)
 	c.AddFunc("@every 1s", func() {
 		t.Log("每秒执行一次", i)
 		i++
 	})
-	time.Sleep(time.Second * 3)
+	time.Sleep(time.Second * 2)
 }
 
 func TestGCron(t *testing.T) {
@@ -41,5 +41,6 @@ func TestGCron(t *testing.T) {
 		i_m++
 	})
 	c.Start()
-	time.Sleep(time.Minute * 1)
+	// time.Sleep(time.Minute * 1)
+	time.Sleep(time.Second * 1)
 }
